@@ -1,0 +1,22 @@
+# Unity generated
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# Uncomment this line if you wish to ignore the .sln files
+# *.sln
+
+# Asset meta data should be ignored
+*.assetmeta
+
+# Unity 5.6 and newer
+/[Pp]ackages/
+
+# Standard ignores
+.DS_Store
+.*.swp
+Thumbs.db
