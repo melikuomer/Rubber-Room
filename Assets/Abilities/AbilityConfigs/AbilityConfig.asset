@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d6d0bac96345094ea80f7045e53e5cb, type: 3}
   m_Name: AbilityConfig
   m_EditorClassIdentifier: 
+  gameObject: {fileID: 0}
   targetingType: 0
   defaultPosition: {x: 0, y: 0, z: 0}
-  childAbilities: []
+  abilityEffects: []
+  childAbilities:
+  - {fileID: 11400000, guid: eacbae4669ee53f41a3fd4bc71d395f4, type: 2}
+  references:
+    version: 2
+    RefIds: []

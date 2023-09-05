@@ -3,6 +3,8 @@ namespace Abilities {
         self = 1,
         neutral = 1 << 1,
 
+        enemy = 1 << 2,
+
 
         
 

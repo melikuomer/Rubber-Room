@@ -8,3 +8,4 @@ namespace Abilities{
         public abstract void ApplyEffect();
     }
 }
+

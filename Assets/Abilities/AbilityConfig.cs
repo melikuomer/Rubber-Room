@@ -7,8 +7,11 @@ namespace Abilities
     [CreateAssetMenu(fileName = "AbilityConfig", menuName = "Abilities/Create New Ability")]
     public class AbilityConfig : ScriptableObject
     {
+
+        public GameObject gameObject;
         public TargetingType targetingType;
         public Vector3 defaultPosition;
+        
         
         public ICollisionDetection collisionDetection;
         public IAbilityAnimation abilityAnimation;

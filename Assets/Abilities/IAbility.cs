@@ -5,7 +5,7 @@ namespace Abilities
 {
     public interface IAbility
     {
-        void Activate(Transform targetTransform, Vector3 targetPosition);
+        void Activate(Target target);
         TargetingType GetTargetingType();
     }
 }

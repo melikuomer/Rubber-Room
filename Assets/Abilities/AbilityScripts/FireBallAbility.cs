@@ -11,12 +11,12 @@ public class FireballAbility : BaseAbility
         fireballConfig = config;
     }
 
-    public override void Activate(Transform targetTransform, Vector3 targetPosition)
+    public override void Activate(Target target)
     {
-        base.Activate(targetTransform, targetPosition);
+        base.Activate(target);
         
         GameObject fireball = GameObject.Instantiate(fireballConfig.fireballPrefab, abilityConfig.defaultPosition, Quaternion.identity);
-        Vector3 directionToTarget = (targetPosition - abilityConfig.defaultPosition).normalized;
+        Vector3 directionToTarget = (target.position - abilityConfig.defaultPosition).normalized;
         Rigidbody fireballRb = fireball.GetComponent<Rigidbody>();
         fireballRb.velocity = directionToTarget * fireballConfig.fireballSpeed;
     }
