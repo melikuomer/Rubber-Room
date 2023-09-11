@@ -53,22 +53,27 @@
     <Analyzer Include="C:\Users\Spencx\.vscode\extensions\visualstudiotoolsforunity.vstuc-0.9.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Utils\Utils.cs" />
+    <Compile Include="Assets\Abilities\temp.cs" />
+    <Compile Include="Assets\Abilities\AbilityTrigger_Base.cs" />
     <Compile Include="Assets\Abilities\AbilityScripts\FireBallAbility.cs" />
+    <Compile Include="Assets\Abilities\TriggerWhileActive.cs" />
     <Compile Include="Assets\Abilities\AbilityConfig.cs" />
     <Compile Include="Assets\Animations\IAbilityAnimation.cs" />
     <Compile Include="Assets\CollisionDetection\ICollisionDetection.cs" />
     <Compile Include="Assets\Abilities\AbilityEffects\AbilityEffects.cs" />
     <Compile Include="Assets\Abilities\IAbility.cs" />
     <Compile Include="Assets\Abilities\Targeting\TargetType.cs" />
+    <Compile Include="Assets\Abilities\AbilityScripts\DebugAbility.cs" />
+    <Compile Include="Assets\Abilities\TriggerOnce.cs" />
+    <Compile Include="Assets\Abilities\TriggerContainer.cs" />
     <Compile Include="Assets\Abilities\AbilityScripts\BaseAura.cs" />
     <Compile Include="Assets\Abilities\FireBallAbilityConfig.cs" />
+    <Compile Include="Assets\Abilities\Targeting\Target.cs" />
     <Compile Include="Assets\Abilities\AbilityScripts\BaseAbility.cs" />
+    <Compile Include="Assets\Abilities\IAbilityTrigger.cs" />
     <Compile Include="Assets\Abilities\Targeting\ITargeting.cs" />
     <Compile Include="Assets\Player\AbilityControllerSC.cs" />
-    <Compile Include="Assets\Abilities\Targeting\Target.cs" />
-    <Compile Include="Assets\Utils\Utils.cs" />
-    <Compile Include="Assets\Abilities\AbilityScripts\DebugAbility.cs" />
-    <Compile Include="Assets\Abilities\IAbilityTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

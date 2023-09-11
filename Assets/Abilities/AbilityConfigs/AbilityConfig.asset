@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d6d0bac96345094ea80f7045e53e5cb, type: 3}
   m_Name: AbilityConfig
   m_EditorClassIdentifier: 
-  gameObject: {fileID: 0}
-  targetingType: 0
-  defaultPosition: {x: 0, y: 0, z: 0}
-  abilityEffects: []
+  gameObject: {fileID: 1234795769974445860, guid: 8ae86f95101fc7d4b98a5b3605541ef5, type: 3}
+  targetingType: 1
+  defaultPosition: {x: 1.73, y: 0, z: 0}
+  abilityEffects:
+  - rid: -2
   childAbilities:
   - {fileID: 11400000, guid: eacbae4669ee53f41a3fd4bc71d395f4, type: 2}
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
