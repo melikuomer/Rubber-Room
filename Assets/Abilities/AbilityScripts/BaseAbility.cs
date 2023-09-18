@@ -1,18 +1,41 @@
 // BaseAbility.cs
+/*
+    This class should not be inherited. Instead it should be contructed with an abilty Config.  
+    This class' main job is to call injected components in a specific order
+*/
+
 using UnityEngine;
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine.UIElements;
+using System.Linq;
 namespace Abilities
 {
 public class BaseAbility : IAbility 
 {
-    protected List<BaseAbility> childAbilities;
-    protected AbilityConfig abilityConfig;
- 
+    #region NotNamedForNow
+    
 
+    #endregion 
+
+    protected List<BaseAbility> childAbilities = new();
+    protected AbilityConfig abilityConfig;
+    
+    protected List<IAbilityEffect> abilityEffects = new();
+
+
+    protected IAbilityTrigger abilityTrigger = null;
     public BaseAbility(AbilityConfig config)
     {
-        childAbilities = new List<BaseAbility>();
         abilityConfig = config;
+
+
+        //Instantiate child abilities from the ability config
+        foreach (var childConfig in abilityConfig.childAbilities){
+            childAbilities.Add(new BaseAbility(childConfig));
+        }
+
+        LoadConfig();
     }
 
     public void AddChildAbility(BaseAbility childAbility)
@@ -29,11 +52,53 @@ public class BaseAbility : IAbility
     {
         // abilityConfig.collisionDetection.CheckCollision(targetPosition);
         // abilityConfig.abilityAnimation.PlayAnimation();
-        
+        abilityTrigger.Trigger(()=> {Debug.Log("sa");});
+
+        var hook = abilityConfig.gameObject.GetComponent<ColliderHook>();
+        hook.onCollisionEnter += OnCollide;
         // foreach (var childAbility in childAbilities)
         // {
         //     childAbility.Activate(targetTransform, targetPosition);
         // }
+    }
+
+    public void OnCollide(Collision other){
+        foreach (var effect in abilityEffects){
+            effect.Apply();
+
+        }
+    }
+
+
+    public void LoadConfig(){
+        
+        abilityTrigger = (IAbilityTrigger)abilityConfig.abilityTrigger.InvokeMember(null,
+            BindingFlags.DeclaredOnly |
+            BindingFlags.Public | BindingFlags.NonPublic |
+            BindingFlags.Instance | BindingFlags.CreateInstance, null, null, null);
+
+
+        foreach (var index  in abilityConfig.effectIndexes){
+            object[] args = null;
+            
+            IAbilityEffect eff = (IAbilityEffect) AbilityConfig.AbilityEffects
+                .ElementAt(index)        
+                    .InvokeMember(null,
+                        BindingFlags.DeclaredOnly |
+                        BindingFlags.Public | BindingFlags.NonPublic |
+                        BindingFlags.Instance | BindingFlags.CreateInstance, null, null, args);
+
+            
+
+            abilityEffects.Add(eff);
+        }
+       
+
+
+        
+
+
+
     }
 }
 }

@@ -5,6 +5,11 @@ using UnityEditor;
 using Unity.VisualScripting;
 
 using Object = UnityEngine.Object;
+using System.Reflection;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Collections.Generic;
+using UnityEditor.PackageManager;
 
 namespace Abilities
 {
@@ -12,6 +17,24 @@ namespace Abilities
     public class AbilityConfig : ScriptableObject
     {
 
+        #region AssemblyStuff
+
+         
+        [NonSerialized]
+        public static readonly Assembly assembly = Assembly.GetExecutingAssembly();
+    
+        public static readonly IEnumerable<Type> AbilityTriggers = GetAssembliesOfType(assembly, typeof(IAbilityTrigger));
+
+        public static readonly IEnumerable<Type> AbilityEffects = GetAssembliesOfType(assembly, typeof(IAbilityEffect));
+
+        [NonSerialized]
+        public int triggerIndex =0;
+
+    
+
+        #endregion
+        [HideInInspector]
+        public List<int> effectIndexes = new(); 
         public GameObject gameObject;
         public TargetingType targetingType;
         public Vector3 defaultPosition;
@@ -21,40 +44,99 @@ namespace Abilities
         public IAbilityAnimation abilityAnimation;
         
         public IAbilityTrigger trigger;
-        [Header("Effects"), SerializeReference]
-        public AbilityEffects[] abilityEffects;
+        
+ 
 
 
         [Header("Child Abilities")]
+        //TODO CHECK IF THE CHILD CONFIG IS SAME AS THIS CONFIG
         public AbilityConfig[] childAbilities; // Configure child abilities in the Inspector
+
+
+
+        static private IEnumerable<Type> GetAssembliesOfType (Assembly assembly, Type selectedType){
+           
+        return  assembly.GetTypes().Where(type => selectedType.IsAssignableFrom(type) && type.IsClass );
+    }
     }
 
 [CustomEditor(typeof(AbilityConfig))]
-public class ActionContainerEditor : Editor
+public class AbilityConfigEditor : Editor
 {
-    private SerializedProperty abilityTriggerProp;
 
-         public Object selectedObject; // This will hold the selected object
-        public string objectType; 
 
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
-       AbilityConfig abilityConfig = (AbilityConfig)target;
-        selectedObject = EditorGUILayout.ObjectField("Select Object:", selectedObject, typeof(IAbilityTrigger), true);
+    
+    Vector2 scrollPosition;
+    int selectedDropdownIndex = 0;
 
-        if (selectedObject != null)
+
+
+
+    public void Awake() {
+       // AbilityConfig.assembly = Assembly.GetExecutingAssembly();
+        //AbilityConfig.AbilityTriggers = GetAssembliesOfType(AbilityConfig.assembly, typeof(IAbilityTrigger));
+        //AbilityConfig.AbilityEffects = GetAssembliesOfType(AbilityConfig.assembly, typeof(IAbilityEffect));
+    }
+
+    static private IEnumerable<Type> GetAssembliesOfType (Assembly assembly, Type selectedType){
+           
+        return  assembly.GetTypes().Where(type => selectedType.IsAssignableFrom(type) && type.IsClass );
+    }
+    
+    private void DrawList(List<int> indexes){
+        
+        
+        GUILayout.Label("Custom List Editor", EditorStyles.boldLabel);
+
+        GUILayout.BeginHorizontal();
+         GUILayout.Space(20);
+        // Add Item Button
+
+        // Dropdown menu
+        selectedDropdownIndex = EditorGUILayout.Popup("Select Option", selectedDropdownIndex, AbilityConfig.AbilityEffects.Select(type => type.Name).ToArray());
+        if (GUILayout.Button("Add Item"))
         {
-            // Capture the type of the selected object
-            objectType = selectedObject.GetType().ToString();
-            EditorGUILayout.LabelField("Object Type:", objectType);
+            indexes.Add(selectedDropdownIndex);
         }
+        GUILayout.EndHorizontal();
 
+        // Display list items
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+        for (int i = 0; i < indexes.Count; i++)
+        {
+            EditorGUILayout.BeginHorizontal();
+
+            // Display item name
+             GUILayout.Space(20);
+            indexes[i]= EditorGUILayout.Popup("Effect: ",indexes[i], AbilityConfig.AbilityEffects.Select(type => type.Name).ToArray());
+
+            // Remove Item Button
+            if (GUILayout.Button("Remove"))
+            {
+                indexes.RemoveAt(i);
+                i--; // Decrement index to avoid skipping the next item
+            }
+
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.EndScrollView();
+    }
+        public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+        AbilityConfig abilityConfig = (AbilityConfig)target;
+
+           abilityConfig.triggerIndex= EditorGUILayout.Popup("Trigger Type: ",abilityConfig.triggerIndex, AbilityConfig.AbilityTriggers.Select(type => type.Name).ToArray());
+
+
+        DrawList(abilityConfig.effectIndexes);
+    
+    //EditorGUILayout.DropdownButton(AbilityConfig.AbilityTriggers.GetType().Name, "", "");
 
         // Display and edit the actions in the Inspector as needed
         // You can use SerializedProperty to make it more user-friendly.
 
-        DrawDefaultInspector();
+       
     }
 }
 
