@@ -54,7 +54,7 @@ public class BaseAbility : IAbility
         // abilityConfig.abilityAnimation.PlayAnimation();
         abilityTrigger.Trigger(()=> {Debug.Log("sa");});
 
-        var hook = abilityConfig.gameObject.GetComponent<ColliderHook>();
+        var hook = abilityConfig.particle.GetComponent<ColliderHook>();
         hook.onCollisionEnter += OnCollide;
         // foreach (var childAbility in childAbilities)
         // {

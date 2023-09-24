@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9728c66c587540448ba1491010d2a9a, type: 3}
+  m_Name: AbilityParticleConfig
+  m_EditorClassIdentifier: 
+  particle: {fileID: 1234795769974445860, guid: 8ae86f95101fc7d4b98a5b3605541ef5, type: 3}
+  movementBehaviour: {fileID: 1234795769974445860, guid: 8ae86f95101fc7d4b98a5b3605541ef5, type: 3}
+  CollisionBehaviour: {fileID: 1234795769974445860, guid: 8ae86f95101fc7d4b98a5b3605541ef5, type: 3}
+  CollisionFilter: {fileID: 8440861863055130115, guid: 4c27fa68a0eb8f140b004059f06d288a, type: 3}

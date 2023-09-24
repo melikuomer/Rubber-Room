@@ -27,15 +27,24 @@ namespace Abilities
 
         public static readonly IEnumerable<Type> AbilityEffects = GetAssembliesOfType(assembly, typeof(IAbilityEffect));
 
-        [NonSerialized]
-        public int triggerIndex =0;
-
-    
 
         #endregion
+
+        
+        [NonSerialized]
+        public int triggerIndex =0;
         [HideInInspector]
         public List<int> effectIndexes = new(); 
-        public GameObject gameObject;
+
+        [HideInInspector]
+         public GameObject particle ;
+ 
+        
+        [HideInInspector]
+        public AbilityParticleConfig particleConfig;
+       
+
+        
         public TargetingType targetingType;
         public Vector3 defaultPosition;
         
@@ -47,7 +56,7 @@ namespace Abilities
         
  
 
-
+        
         [Header("Child Abilities")]
         //TODO CHECK IF THE CHILD CONFIG IS SAME AS THIS CONFIG
         public AbilityConfig[] childAbilities; // Configure child abilities in the Inspector
@@ -69,10 +78,11 @@ public class AbilityConfigEditor : Editor
     Vector2 scrollPosition;
     int selectedDropdownIndex = 0;
 
-
+    AbilityConfig abilityConfig;
 
 
     public void Awake() {
+        abilityConfig = (AbilityConfig)target;
        // AbilityConfig.assembly = Assembly.GetExecutingAssembly();
         //AbilityConfig.AbilityTriggers = GetAssembliesOfType(AbilityConfig.assembly, typeof(IAbilityTrigger));
         //AbilityConfig.AbilityEffects = GetAssembliesOfType(AbilityConfig.assembly, typeof(IAbilityEffect));
@@ -83,7 +93,22 @@ public class AbilityConfigEditor : Editor
         return  assembly.GetTypes().Where(type => selectedType.IsAssignableFrom(type) && type.IsClass );
     }
     
+    private void DrawScriptableObject(ref AbilityParticleConfig obj){
+        if(obj == null) return;
+           
+        foreach (var field in typeof(AbilityParticleConfig).GetFields(BindingFlags.Public
+        | BindingFlags.Instance) ){
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Space(10);
+            
+            GameObject value = (GameObject) field.GetValue(obj);
+            field.SetValue(obj, (GameObject)EditorGUILayout.ObjectField(field.Name, value, typeof(GameObject), false));
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.Space(10);
+    }
     private void DrawList(List<int> indexes){
+    
         
         
         GUILayout.Label("Custom List Editor", EditorStyles.boldLabel);
@@ -121,15 +146,19 @@ public class AbilityConfigEditor : Editor
         }
         EditorGUILayout.EndScrollView();
     }
-        public override void OnInspectorGUI()
-    {
+    public override void OnInspectorGUI(){
         DrawDefaultInspector();
-        AbilityConfig abilityConfig = (AbilityConfig)target;
 
-           abilityConfig.triggerIndex= EditorGUILayout.Popup("Trigger Type: ",abilityConfig.triggerIndex, AbilityConfig.AbilityTriggers.Select(type => type.Name).ToArray());
+        
+
+        abilityConfig.triggerIndex= EditorGUILayout.Popup("Trigger Type: ",abilityConfig.triggerIndex, AbilityConfig.AbilityTriggers.Select(type => type.Name).ToArray());
 
 
         DrawList(abilityConfig.effectIndexes);
+
+        abilityConfig.particle = (GameObject) EditorGUILayout.ObjectField("Particle", abilityConfig.particle , typeof(GameObject), false);
+        abilityConfig.particleConfig  =(AbilityParticleConfig) EditorGUILayout.ObjectField("Particle Config",abilityConfig.particleConfig, typeof(AbilityParticleConfig), false);
+        DrawScriptableObject(ref abilityConfig.particleConfig);
     
     //EditorGUILayout.DropdownButton(AbilityConfig.AbilityTriggers.GetType().Name, "", "");
 
