@@ -10,113 +10,61 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections.Generic;
 using UnityEditor.PackageManager;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
+
 
 namespace Abilities
 {
     [CreateAssetMenu(fileName = "AbilityParticleConfig", menuName = "Abilities/Create New Particle")]
-    public class AbilityParticleConfig : ScriptableObject
+    public partial class AbilityParticleConfig : ScriptableObject
     {
 
+        
+        public string nickname; 
         public GameObject particle; 
-        public GameObject movementBehaviour;
 
+        
+        
+        public IAbilityLogic movementBehaviour;
+
+   
+
+        public InterfaceContainer<IAbilityLogic> logic = new();
+        
         public GameObject CollisionBehaviour;
 
         public GameObject CollisionFilter;
 
 
-        
 
-
-        #region AssemblyStuff
-
-         
-        [NonSerialized]
-        public static readonly Assembly assembly = Assembly.GetExecutingAssembly();
     
 
-
-        #endregion
-
-        
- 
-
-
-
-        static private IEnumerable<Type> GetAssembliesOfType (Assembly assembly, Type selectedType){
+        public static void DrawScriptableObject(ref AbilityParticleConfig obj){
+        if(obj == null) return;
+            
+        foreach (var field in typeof(AbilityParticleConfig).GetFields(BindingFlags.Public
+        | BindingFlags.Instance) ){
+            // EditorGUILayout.BeginHorizontal();
+            // EditorGUILayout.Space(10);
+            var val = field.GetValue(obj);
            
-        return  assembly.GetTypes().Where(type => selectedType.IsAssignableFrom(type) && type.IsClass );
-    }
-    }
-
-[CustomEditor(typeof(AbilityParticleConfig))]
-public class AbilityParticleConfigEditor : Editor
-{
-
-
-    
-    Vector2 scrollPosition;
-    int selectedDropdownIndex = 0;
-
-
-
-
-    public void Awake() {
-
-    }
-
-  
-    
-    private void DrawList(List<int> indexes){
-        
-        
-        GUILayout.Label("Custom List Editor", EditorStyles.boldLabel);
-
-        GUILayout.BeginHorizontal();
-         GUILayout.Space(20);
-        // Add Item Button
-
-        // Dropdown menu
-        selectedDropdownIndex = EditorGUILayout.Popup("Select Option", selectedDropdownIndex, AbilityConfig.AbilityEffects.Select(type => type.Name).ToArray());
-        if (GUILayout.Button("Add Item"))
-        {
-            indexes.Add(selectedDropdownIndex);
-        }
-        GUILayout.EndHorizontal();
-
-        // Display list items
-        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-        for (int i = 0; i < indexes.Count; i++)
-        {
-            EditorGUILayout.BeginHorizontal();
-
-            // Display item name
-             GUILayout.Space(20);
-            indexes[i]= EditorGUILayout.Popup("Effect: ",indexes[i], AbilityConfig.AbilityEffects.Select(type => type.Name).ToArray());
-
-            // Remove Item Button
-            if (GUILayout.Button("Remove"))
-            {
-                indexes.RemoveAt(i);
-                i--; // Decrement index to avoid skipping the next item
+            if (val is string){
+                string value = (string) field.GetValue(obj);
+                
+                field.SetValue(obj, EditorGUILayout.TextField(field.Name, value));
+            }else {
+                    
+                Object value = (Object) field.GetValue(obj);
+                field.SetValue(obj, EditorGUILayout.ObjectField(field.Name, value, field.FieldType, false));
             }
-
-            EditorGUILayout.EndHorizontal();
+            // EditorGUILayout.EndHorizontal();
         }
-        EditorGUILayout.EndScrollView();
+        // EditorGUILayout.Space(10);
     }
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
 
-    
-    //EditorGUILayout.DropdownButton(AbilityConfig.AbilityTriggers.GetType().Name, "", "");
-
-        // Display and edit the actions in the Inspector as needed
-        // You can use SerializedProperty to make it more user-friendly.
-
-       
     }
-}
 
-}
+
+
+
+ }

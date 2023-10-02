@@ -2,14 +2,14 @@
 using System;
 using UnityEngine;
 using UnityEditor;
-using Unity.VisualScripting;
+
 
 using Object = UnityEngine.Object;
 using System.Reflection;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
+
 
 namespace Abilities
 {
@@ -25,17 +25,17 @@ namespace Abilities
     
         public static readonly IEnumerable<Type> AbilityTriggers = GetAssembliesOfType(assembly, typeof(IAbilityTrigger));
 
-        public static readonly IEnumerable<Type> AbilityEffects = GetAssembliesOfType(assembly, typeof(IAbilityEffect));
+         public static readonly IEnumerable<Type> AbilityEffects = GetAssembliesOfType(assembly, typeof(IAbilityEffect));
 
 
         #endregion
 
+        public InterfaceContainer<IAbilityTrigger> trigger;
         
-        [NonSerialized]
-        public int triggerIndex =0;
-        [HideInInspector]
-        public List<int> effectIndexes = new(); 
+  
+        public InterfaceContainerArray<IAbilityEffect> effects;
 
+        
         [HideInInspector]
          public GameObject particle ;
  
@@ -48,11 +48,11 @@ namespace Abilities
         public TargetingType targetingType;
         public Vector3 defaultPosition;
         
-        public Type abilityTrigger;
+        
         public ICollisionDetection collisionDetection;
         public IAbilityAnimation abilityAnimation;
         
-        public IAbilityTrigger trigger;
+        
         
  
 
@@ -83,30 +83,12 @@ public class AbilityConfigEditor : Editor
 
     public void Awake() {
         abilityConfig = (AbilityConfig)target;
-       // AbilityConfig.assembly = Assembly.GetExecutingAssembly();
-        //AbilityConfig.AbilityTriggers = GetAssembliesOfType(AbilityConfig.assembly, typeof(IAbilityTrigger));
-        //AbilityConfig.AbilityEffects = GetAssembliesOfType(AbilityConfig.assembly, typeof(IAbilityEffect));
+
     }
 
-    static private IEnumerable<Type> GetAssembliesOfType (Assembly assembly, Type selectedType){
-           
-        return  assembly.GetTypes().Where(type => selectedType.IsAssignableFrom(type) && type.IsClass );
-    }
+
     
-    private void DrawScriptableObject(ref AbilityParticleConfig obj){
-        if(obj == null) return;
-           
-        foreach (var field in typeof(AbilityParticleConfig).GetFields(BindingFlags.Public
-        | BindingFlags.Instance) ){
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.Space(10);
-            
-            GameObject value = (GameObject) field.GetValue(obj);
-            field.SetValue(obj, (GameObject)EditorGUILayout.ObjectField(field.Name, value, typeof(GameObject), false));
-            EditorGUILayout.EndHorizontal();
-        }
-        EditorGUILayout.Space(10);
-    }
+
     private void DrawList(List<int> indexes){
     
         
@@ -118,7 +100,7 @@ public class AbilityConfigEditor : Editor
         // Add Item Button
 
         // Dropdown menu
-        selectedDropdownIndex = EditorGUILayout.Popup("Select Option", selectedDropdownIndex, AbilityConfig.AbilityEffects.Select(type => type.Name).ToArray());
+        selectedDropdownIndex = EditorGUILayout.Popup("Select Option", selectedDropdownIndex, AssemblyDatabase.AbilityEffects.Select(type => type.Name).ToArray());
         if (GUILayout.Button("Add Item"))
         {
             indexes.Add(selectedDropdownIndex);
@@ -133,7 +115,7 @@ public class AbilityConfigEditor : Editor
 
             // Display item name
              GUILayout.Space(20);
-            indexes[i]= EditorGUILayout.Popup("Effect: ",indexes[i], AbilityConfig.AbilityEffects.Select(type => type.Name).ToArray());
+            indexes[i]= EditorGUILayout.Popup("Effect: ",indexes[i], AssemblyDatabase.AbilityEffects.Select(type => type.Name).ToArray());
 
             // Remove Item Button
             if (GUILayout.Button("Remove"))
@@ -151,16 +133,20 @@ public class AbilityConfigEditor : Editor
 
         
 
-        abilityConfig.triggerIndex= EditorGUILayout.Popup("Trigger Type: ",abilityConfig.triggerIndex, AbilityConfig.AbilityTriggers.Select(type => type.Name).ToArray());
+        //abilityConfig.triggerIndex= EditorGUILayout.Popup("Trigger Type: ",abilityConfig.triggerIndex, AssemblyDatabase.AbilityTriggers.Select(type => type.Name).ToArray());
 
 
-        DrawList(abilityConfig.effectIndexes);
+        //DrawList(abilityConfig.effectIndexes);
 
-        abilityConfig.particle = (GameObject) EditorGUILayout.ObjectField("Particle", abilityConfig.particle , typeof(GameObject), false);
-        abilityConfig.particleConfig  =(AbilityParticleConfig) EditorGUILayout.ObjectField("Particle Config",abilityConfig.particleConfig, typeof(AbilityParticleConfig), false);
-        DrawScriptableObject(ref abilityConfig.particleConfig);
-    
-    //EditorGUILayout.DropdownButton(AbilityConfig.AbilityTriggers.GetType().Name, "", "");
+        //abilityConfig.particle = (GameObject) EditorGUILayout.ObjectField("Particle", abilityConfig.particle , typeof(GameObject), false);
+       
+
+        //abilityConfig.particleConfig  =(AbilityParticleConfig) EditorGUILayout.ObjectField("Particle Config",abilityConfig.particleConfig, typeof(AbilityParticleConfig), false);
+
+        EditorGUI.indentLevel+=2;
+        //AbilityParticleConfig.DrawScriptableObject(ref abilityConfig.particleConfig);
+        EditorGUI.indentLevel-=2;
+
 
         // Display and edit the actions in the Inspector as needed
         // You can use SerializedProperty to make it more user-friendly.

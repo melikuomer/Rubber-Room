@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9728c66c587540448ba1491010d2a9a, type: 3}
   m_Name: newpart
   m_EditorClassIdentifier: 
-  particle: {fileID: 0}
-  movementBehaviour: {fileID: 0}
+  nickname: ahmet
+  particle: {fileID: 8440861863055130115, guid: 4c27fa68a0eb8f140b004059f06d288a, type: 3}
+  logic:
+    interfaceType: Abilities.IAbilityLogic, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    className: Stop
   CollisionBehaviour: {fileID: 0}
   CollisionFilter: {fileID: 0}

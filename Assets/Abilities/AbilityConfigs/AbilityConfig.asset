@@ -12,8 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d6d0bac96345094ea80f7045e53e5cb, type: 3}
   m_Name: AbilityConfig
   m_EditorClassIdentifier: 
-  effectIndexes: 0000000001000000
-  gameObject: {fileID: 1234795769974445860, guid: 8ae86f95101fc7d4b98a5b3605541ef5, type: 3}
+  trigger:
+    interfaceType: Abilities.IAbilityTrigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    className: AbilityTrigger_Base
+  effects:
+    interfaceType: Abilities.IAbilityEffect, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    classNames:
+    - DamageAbility
+    - SlowEffect
+    - SlowEffect
+    - SlowEffect
+    - SlowEffect
+    - SlowEffect
+    - SlowEffect
+  particle: {fileID: 0}
+  particleConfig: {fileID: 0}
   targetingType: 1
   defaultPosition: {x: 1.02, y: 0, z: 0}
   childAbilities:

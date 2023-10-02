@@ -72,26 +72,26 @@ public class BaseAbility : IAbility
 
     public void LoadConfig(){
         
-        abilityTrigger = (IAbilityTrigger)abilityConfig.abilityTrigger.InvokeMember(null,
-            BindingFlags.DeclaredOnly |
-            BindingFlags.Public | BindingFlags.NonPublic |
-            BindingFlags.Instance | BindingFlags.CreateInstance, null, null, null);
+        // abilityTrigger = (IAbilityTrigger)abilityConfig.abilityTrigger.InvokeMember(null,
+        //     BindingFlags.DeclaredOnly |
+        //     BindingFlags.Public | BindingFlags.NonPublic |
+        //     BindingFlags.Instance | BindingFlags.CreateInstance, null, null, null);
 
 
-        foreach (var index  in abilityConfig.effectIndexes){
-            object[] args = null;
+        // foreach (var index  in abilityConfig.effectIndexes){
+        //     object[] args = null;
             
-            IAbilityEffect eff = (IAbilityEffect) AbilityConfig.AbilityEffects
-                .ElementAt(index)        
-                    .InvokeMember(null,
-                        BindingFlags.DeclaredOnly |
-                        BindingFlags.Public | BindingFlags.NonPublic |
-                        BindingFlags.Instance | BindingFlags.CreateInstance, null, null, args);
+        //     IAbilityEffect eff = (IAbilityEffect) AbilityConfig.AbilityEffects
+        //         .ElementAt(index)        
+        //             .InvokeMember(null,
+        //                 BindingFlags.DeclaredOnly |
+        //                 BindingFlags.Public | BindingFlags.NonPublic |
+        //                 BindingFlags.Instance | BindingFlags.CreateInstance, null, null, args);
 
             
 
-            abilityEffects.Add(eff);
-        }
+        //     abilityEffects.Add(eff);
+        // }
        
 
 
