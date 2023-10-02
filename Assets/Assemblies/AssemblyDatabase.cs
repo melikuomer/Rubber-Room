@@ -19,18 +19,7 @@ public static class AssemblyDatabase {
         public static readonly objectMap AssemblyMap = CreateMap(GetInterfacesInNamespace(namespaceType: typeof(AbilityConfig)));
 
 
-        #region OLD
-        public static readonly IEnumerable<Type> AbilityTriggers = GetAssembliesOfType( typeof(IAbilityTrigger));
-        public static readonly objectMap TriggerDictionary = EnumerableToDictionary(AbilityTriggers);
-
-        public static readonly IEnumerable<Type> AbilityEffects = GetAssembliesOfType( typeof(IAbilityEffect));
-
-        public static readonly IEnumerable<Type> AbilityLogics = GetAssembliesOfType( typeof(IAbilityLogic));
-
-
-         public static readonly objectMap LogicDictionary = EnumerableToDictionary(AbilityLogics);
-        
-        #endregion
+      
 
     static private objectMap EnumerableToDictionary (IEnumerable<Type> types ){
         objectMap typeMap = new ();

@@ -12,7 +12,7 @@ public class AbilityControllerSC : MonoBehaviour
     private IAbility ability;
     void Start()
     {
-        ability = new DebugAbility(config);
+        ability = new BaseAbility(config);
     }
 
     // Update is called once per frame

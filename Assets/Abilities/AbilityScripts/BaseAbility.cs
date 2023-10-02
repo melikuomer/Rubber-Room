@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine.UIElements;
 using System.Linq;
+using System;
 namespace Abilities
 {
 public class BaseAbility : IAbility 
@@ -17,9 +18,9 @@ public class BaseAbility : IAbility
     
 
     #endregion 
+    protected AbilityConfig abilityConfig;
 
     protected List<BaseAbility> childAbilities = new();
-    protected AbilityConfig abilityConfig;
     
     protected List<IAbilityEffect> abilityEffects = new();
 
@@ -52,10 +53,10 @@ public class BaseAbility : IAbility
     {
         // abilityConfig.collisionDetection.CheckCollision(targetPosition);
         // abilityConfig.abilityAnimation.PlayAnimation();
-        abilityTrigger.Trigger(()=> {Debug.Log("sa");});
+        // abilityTrigger.Trigger(()=> {Debug.Log("sa");});
 
-        var hook = abilityConfig.particle.GetComponent<ColliderHook>();
-        hook.onCollisionEnter += OnCollide;
+        // var hook = abilityConfig.particle.GetComponent<ColliderHook>();
+        // hook.onCollisionEnter += OnCollide;
         // foreach (var childAbility in childAbilities)
         // {
         //     childAbility.Activate(targetTransform, targetPosition);
@@ -71,34 +72,20 @@ public class BaseAbility : IAbility
 
 
     public void LoadConfig(){
-        
-        // abilityTrigger = (IAbilityTrigger)abilityConfig.abilityTrigger.InvokeMember(null,
-        //     BindingFlags.DeclaredOnly |
-        //     BindingFlags.Public | BindingFlags.NonPublic |
-        //     BindingFlags.Instance | BindingFlags.CreateInstance, null, null, null);
+        Debug.Log(abilityConfig.AbilityTrigger.className);
+        abilityTrigger = (IAbilityTrigger)Activator.CreateInstance(Type.GetType(abilityConfig.AbilityTrigger.className));
 
 
-        // foreach (var index  in abilityConfig.effectIndexes){
-        //     object[] args = null;
+        foreach (var className  in abilityConfig.effects.classNames){
+            object[] args = null;
             
-        //     IAbilityEffect eff = (IAbilityEffect) AbilityConfig.AbilityEffects
-        //         .ElementAt(index)        
-        //             .InvokeMember(null,
-        //                 BindingFlags.DeclaredOnly |
-        //                 BindingFlags.Public | BindingFlags.NonPublic |
-        //                 BindingFlags.Instance | BindingFlags.CreateInstance, null, null, args);
+            IAbilityEffect eff = (IAbilityEffect) Activator.CreateInstance(Type.GetType(className));
 
             
 
-        //     abilityEffects.Add(eff);
-        // }
+            abilityEffects.Add(eff);
+        }
        
-
-
-        
-
-
-
     }
 }
 }

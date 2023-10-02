@@ -75,15 +75,14 @@
     <Compile Include="Assets\Abilities\AbilityEffects\DamageEffect.cs" />
     <Compile Include="Assets\Abilities\AbilityLogic\Stop.cs" />
     <Compile Include="Assets\Abilities\InterfaceContainer.cs" />
-    <Compile Include="Assets\Abilities\AbilityScripts\DebugAbility.cs" />
     <Compile Include="Assets\Abilities\AbilityEffects\SlowEffect.cs" />
-    <Compile Include="Assets\Abilities\AbilityScripts\BaseAura.cs" />
     <Compile Include="Assets\Abilities\Targeting\Target.cs" />
     <Compile Include="Assets\Abilities\AbilityTriggers\TriggerContainer.cs" />
     <Compile Include="Assets\Abilities\AbilityScripts\BaseAbility.cs" />
     <Compile Include="Assets\Abilities\AbilityTriggers\TriggerWhileActive.cs" />
     <Compile Include="Assets\Abilities\Targeting\ITargeting.cs" />
     <Compile Include="Assets\Player\AbilityControllerSC.cs" />
+    <Compile Include="Assets\Abilities\ParticleBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

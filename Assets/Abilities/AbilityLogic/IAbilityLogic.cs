@@ -5,6 +5,7 @@ using System;
 
 using System.Reflection;
 using UnityEditor.PackageManager;
+using System.Collections;
 
 namespace Abilities  {
 
@@ -17,7 +18,7 @@ namespace Abilities  {
 
     */        
 
-        public void DoLogic();
+        public IEnumerator DoLogic(Transform transform, float lerpDuration, Transform startMarker, Transform endMarker);
 
         
     }

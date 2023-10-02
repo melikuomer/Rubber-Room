@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9728c66c587540448ba1491010d2a9a, type: 3}
+  m_Name: Nidalee Spear
+  m_EditorClassIdentifier: 
+  nickname: Nidalee Q
+  particle: {fileID: 8440861863055130115, guid: 4c27fa68a0eb8f140b004059f06d288a, type: 3}
+  logic:
+    interfaceType: Abilities.IAbilityLogic, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    className: Abilities.Move, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  CollisionBehaviour:
+    interfaceType: Abilities.ICollisionDetection, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    className: 
+  CollisionFilter: {fileID: 0}

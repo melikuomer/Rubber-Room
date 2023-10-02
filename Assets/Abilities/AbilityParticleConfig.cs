@@ -16,7 +16,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Tree;
 namespace Abilities
 {
     [CreateAssetMenu(fileName = "AbilityParticleConfig", menuName = "Abilities/Create New Particle")]
-    public partial class AbilityParticleConfig : ScriptableObject
+    public class AbilityParticleConfig : ScriptableObject
     {
 
         
@@ -25,20 +25,27 @@ namespace Abilities
 
         
         
-        public IAbilityLogic movementBehaviour;
+
 
    
 
         public InterfaceContainer<IAbilityLogic> logic = new();
         
-        public GameObject CollisionBehaviour;
+        public InterfaceContainer<ICollisionDetection> CollisionBehaviour = new();
 
         public GameObject CollisionFilter;
 
 
 
-    
 
+
+        private void Awake() {
+            var particleBase = particle.AddComponent<ParticleBase>();
+            particleBase.LoadConfig(this);
+        }
+
+
+        [Obsolete]
         public static void DrawScriptableObject(ref AbilityParticleConfig obj){
         if(obj == null) return;
             

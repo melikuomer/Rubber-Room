@@ -30,18 +30,31 @@ public class ContainerDrawer: PropertyDrawer {
         var interfaceType = property.FindPropertyRelative("interfaceType").stringValue;
         Type IType = Type.GetType(interfaceType);
         //Get all the assemblies which have the given type
-        var keys = AssemblyDatabase.GetObjectMap(IType).Keys.ToArray();
+        var map = AssemblyDatabase.GetObjectMap(IType);
+        var keys = map.Keys.ToArray();
         //Get which class is selected. 
         var classNameProperty =  property.FindPropertyRelative("className");
-        var className = classNameProperty.GetUnderlyingValue();
+        string className = (string)classNameProperty.GetUnderlyingValue();
 
         //Find the index of currently selected class
-        var localindex = Array.IndexOf(keys, className);
+
+        string word = className;
+        //TODO: put next three linex into a function in utils class. These handle the AssemblyQualifiedName to Standard name conversion
+        if(word != ""){
+            Debug.Log(word);
+        int namespaceIndex = className.IndexOf('.');
+        int commaIndex = className.IndexOf(',', namespaceIndex);
+        word = className.Substring(namespaceIndex + 1, commaIndex - namespaceIndex - 1).Trim();
+        }
+
+        var localindex = Array.IndexOf(keys,word);
+
         
         //Draw popup window with the current index
-        var index = EditorGUI.Popup( position,property.name, localindex,  keys);
+        var index = EditorGUI.Popup( position,property.displayName, localindex,  keys);
         if(index != -1 && index != localindex){
-            classNameProperty.stringValue = keys[index];
+            var type = (Type)map.GetValueOrDefault(keys[index]);
+            classNameProperty.stringValue = type.AssemblyQualifiedName;
         }
         
     }
